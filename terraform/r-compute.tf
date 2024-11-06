@@ -21,8 +21,9 @@ resource "google_compute_instance" "fast_api_instance_private" {
 
   metadata = {
     startup-script = file("${path.module}/../src/startup_fastapi.sh") 
+  }
 
-  service_account = {
+  service_account {
     email  = google_service_account.fast_api_compute_sa.email
     scopes = ["https://www.googleapis.com/auth/cloud-platform"] 
   }
