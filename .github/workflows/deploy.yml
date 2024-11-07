@@ -198,11 +198,11 @@ jobs:
       id: terraform_output
       run: |
         echo "BastionTestNatIP=$(terraform output -raw bastion_instance_external_ip)" 
-        echo "BastionTestInstanceName=$(terraform output -raw bastion_instance_name)"
-        echo "BucketTestBucketName=$(terraform output -raw bucket_data_name)" 
-        echo "CloudSQLTestInstanceName=$(terraform output -raw sql_instance_name)" 
+        echo "BastionTestInstanceName=$(terraform output -raw project_resource_name.bastion_instance_name)"
+        echo "BucketTestBucketName=$(terraform output -raw project_resource_name.bucket_data_name)" 
+        echo "CloudSQLTestInstanceName=$(terraform output -raw project_resource_name.project_resource_name.sql_instance_name)" 
         echo "FastApiTestIpAddress=$(terraform output -raw bastion_instance_external_ip)" 
-        echo "PrivateVMTestInstanceName=$(terraform output -raw fast_api_instance_name)" 
+        echo "PrivateVMTestInstanceName=$(terraform output -project_resource_name.raw fast_api_instance_name)" 
         echo "PrivateVMTestPrivateSubnetwork=https://www.googleapis.com/compute/v1/projects/${{ env.PROJECT_NAME }}/regions/${{ env.REGION }}/subnetworks/${{ env.PROJECT_NAME }}-private-subnet"
 
     # # Step 10: Install Pester module
