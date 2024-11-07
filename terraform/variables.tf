@@ -15,7 +15,7 @@ variable "zone" {
 
 variable "tfstate_bucket_name" {
   type    = string
-  default = "gcpfastapi-dev-europe-west1-terraform"
+  default = "gcpfastapi-prd-europe-west1-terraform"
 }
 
 variable "fast_api_instance_compute_type" {
