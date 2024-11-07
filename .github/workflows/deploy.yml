@@ -197,12 +197,12 @@ jobs:
     - name: Terraform Output 
       id: terraform_output
       run: |
-        echo "BastionTestNatIP=$(terraform output bastion_instance_external_ip )" >> $GITHUB_ENV
-        echo "BastionTestInstanceName=$(terraform output bastion_instance_name )" >> $GITHUB_ENV
-        echo "BucketTestBucketName=$(terraform output bucket_data_name )" >> $GITHUB_ENV
-        echo "CloudSQLTestInstanceName=$(terraform output project_resource_name.sql_instance_name )" >> $GITHUB_ENV
-        echo "FastApiTestIpAddress=$(terraform output bastion_instance_external_ip)" >> $GITHUB_ENV
-        echo "PrivateVMTestInstanceName=$(terraform output fast_api_instance_name )" >> $GITHUB_ENV
+        echo "BastionTestNatIP=$(terraform output -raw bastion_instance_external_ip 2>/dev/null)" >> $GITHUB_ENV
+        echo "BastionTestInstanceName=$(terraform output -raw bastion_instance_name 2>/dev/null)" >> $GITHUB_ENV
+        echo "BucketTestBucketName=$(terraform output -raw bucket_data_name 2>/dev/null)" >> $GITHUB_ENV
+        echo "CloudSQLTestInstanceName=$(terraform output project_resource_name.sql_instance_name 2>/dev/null)" >> $GITHUB_ENV
+        echo "FastApiTestIpAddress=$(terraform output bastion_instance_external_ip 2>/dev/null)" 
+        echo "PrivateVMTestInstanceName=$(terraform output -raw fast_api_instance_name 2>/dev/null)" 
         echo "PrivateVMTestPrivateSubnetwork=https://www.googleapis.com/compute/v1/projects/${{ env.PROJECT_NAME }}/regions/${{ env.REGION }}/subnetworks/${{ env.PROJECT_NAME }}-private-subnet" >> $GITHUB_ENV
 
     # Step 10: Install Pester module
