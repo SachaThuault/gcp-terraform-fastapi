@@ -3,12 +3,22 @@ output "bastion_instance_external_ip" {
   description = "The external IP address of the bastion instance to access from browser."
 }
 
-output "project_resource_name" {
-  value = {
-    sql_instance_name      = google_sql_database_instance.sql_instance.name
-    bucket_data_name       = google_storage_bucket.bucket_data.name
-    fast_api_instance_name = google_compute_instance.fast_api_instance_private.name
-    bastion_instance_name  = google_compute_instance.bastion_instance.name
-  }
+output "bastion_instance_name" {
+  value       = google_compute_instance.bastion_instance.name
+  description = "The name of the bastion instance."
+}
 
+output "sql_instance_name" {
+  value       = google_sql_database_instance.sql_instance.name
+  description = "The name of the Cloud SQL instance."
+}
+
+output "bucket_data_name" {
+  value       = google_storage_bucket.bucket_data.name
+  description = "The name of the storage bucket."
+}
+
+output "fast_api_instance_name" {
+  value       = google_compute_instance.fast_api_instance_private.name
+  description = "The name of the FastAPI private instance."
 }
