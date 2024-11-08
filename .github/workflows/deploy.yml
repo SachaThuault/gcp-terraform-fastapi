@@ -106,7 +106,7 @@ jobs:
       run: |
         REGION=$(echo "${{ env.PROJECT_NAME }}" | cut -d '-' -f 3-4)
         ZONE="${REGION}-${{ env.ZONE }}"      
-
+        echo "REGION=${REGION}" >> $GITHUB_ENV
         cat <<EOF > context.tfvars
         project_id = "${{ env.PROJECT_NAME }}"
         region = "$REGION"
