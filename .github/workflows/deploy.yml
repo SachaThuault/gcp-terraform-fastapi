@@ -198,8 +198,16 @@ jobs:
     # Step 9: Run Terraform Output
     - name: Terraform Output 
       id: terraform_output
-      run: |
+      run: | 
+        echo "bastion_instance_external_ip=`terraform output -raw bastion_instance_external_ip`" >> $GITHUB_ENV
+        echo "bastion_instance_name=`terraform output -raw bastion_instance_name`" >> $GITHUB_ENV
+        echo "sql_instance_name=`terraform output -raw sql_instance_name`" >> $GITHUB_ENV
+        echo "bucket_data_name=`terraform output -raw bucket_data_name`" >> $GITHUB_ENV
+        echo "fast_api_instance_name=`terraform output -raw fast_api_instance_name`" >> $GITHUB_ENV
         echo "public_subnetwork_name=`terraform output -raw public_subnetwork_name`" >> $GITHUB_ENV
+        echo "private_network_name=`terraform output -raw private_network_name`" >> $GITHUB_ENV
+        echo "public_subnetwork_name=`terraform output -raw public_subnetwork_name`" >> $GITHUB_ENV
+        echo "private_subnetwork_name=`terraform output -raw private_subnetwork_name`" >> $GITHUB_ENV
 
     # Step 10: Install Pester module
     - name: Install Pester Module
@@ -213,21 +221,21 @@ jobs:
       run: |
         Write-Host ${{ env.public_subnetwork_name }}
         .\runTests.ps1 `
-        -BastionTestNatIP ${{ env.BastionTestNatIP }} `
-        -BastionTestPublicSubnetwork "https://www.googleapis.com/compute/v1/projects/${{ env.PROJECT_NAME }}/regions/${{ env.REGION }}/subnetworks/${{ env.PROJECT_NAME }}-public-subnet" `
-        -BastionTestInstanceName ${{ env.BastionTestInstanceName }} `
+        -BastionTestNatIP ${{ env.bastion_instance_external_ip }} `
+        -BastionTestPublicSubnetwork ${{ env.public_subnetwork_name }} `
+        -BastionTestInstanceName ${{ env.bastion_instance_name }} `
         -BastionTestZone ${{ env.ZONE }} `
-        -BucketTestBucketName ${{ env.BucketTestBucketName }} `
+        -BucketTestBucketName ${{ env.bucket_data_name }} `
         -BucketTestTestFileName "testfile.txt" `
         -BucketTestFile1 "insert_sql_movies.py" `
         -BucketTestFile2 "main.py" `
         -BucketTestFile3 "movie.sql" `
-        -CloudSQLTestPrivateNetwork "projects/${{ env.PROJECT_NAME }}/global/networks/${{ env.PROJECT_NAME }}-network" `
+        -CloudSQLTestPrivateNetwork ${{ env.private_subnetwork_name }} `
         -CloudSQLTestRegion ${{ env.REGION }} `
-        -CloudSQLTestInstanceName ${{ env.CloudSQLTestInstanceName }} `
+        -CloudSQLTestInstanceName ${{ env.sql_instance_name }} `
         -CloudSQLTestProjectId ${{ env.PROJECT_NAME }} `
-        -FastApiTestIpAddress ${{ env.FastApiTestIpAddress }} `
+        -FastApiTestIpAddress "10.0.0.2" `
         -PrivateVMTestNetworkIP "10.0.0.2" `
-        -PrivateVMTestPrivateSubnetwork ${{ env.PrivateVMTestPrivateSubnetwork }} `
-        -PrivateVMTestInstanceName ${{ env.PrivateVMTestInstanceName }} `
+        -PrivateVMTestPrivateSubnetwork ${{ env.private_subnetwork_name }} `
+        -PrivateVMTestInstanceName ${{ env.fast_api_instance_name }} `
         -PrivateVMTestZone ${{ env.ZONE }}
