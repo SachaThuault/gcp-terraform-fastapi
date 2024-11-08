@@ -198,6 +198,7 @@ jobs:
     - name: Terraform Output 
       id: terraform_output
       run: | 
+        terraform output 
         echo "bastion_instance_external_ip=`terraform output -raw bastion_instance_external_ip`" >> $GITHUB_ENV
         echo "bastion_instance_name=`terraform output -raw bastion_instance_name`" >> $GITHUB_ENV
         echo "sql_instance_name=`terraform output -raw sql_instance_name`" >> $GITHUB_ENV
