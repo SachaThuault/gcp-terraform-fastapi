@@ -148,8 +148,6 @@ jobs:
       run: |
           CREDENTIALS_GCP_NAME=$(echo "$PROJECT_NAME" | sed 's/-/_/g')
           echo "CREDENTIALS_GCP_NAME=${CREDENTIALS_GCP_NAME}" >> $GITHUB_ENV
-          REGION=$(echo "${{ env.PROJECT_NAME }}" | cut -d '-' -f 3-4)
-          echo "REGION=${REGION}" >> $GITHUB_ENV
 
     # Step 3: Export credentials to credentials.json
     - name: Export credentials to credentials.json
@@ -220,23 +218,24 @@ jobs:
       shell: pwsh
       working-directory: test
       run: |
-        Write-Host ${{ env.public_subnetwork_name }}
+        $region = ($env:PROJECT_NAME -split '-' | Select-Object -Skip 2 -First 2) -join '-'
+        $zone = "$region-$($env:ZONE)"
         .\runTests.ps1 `
         -BastionTestNatIP ${{ env.bastion_instance_external_ip }} `
         -BastionTestPublicSubnetwork ${{ env.public_subnetwork_name }} `
         -BastionTestInstanceName ${{ env.bastion_instance_name }} `
-        -BastionTestZone ${{ env.ZONE }} `
+        -BastionTestZone $zone `
         -BucketTestBucketName ${{ env.bucket_data_name }} `
         -BucketTestTestFileName "testfile.txt" `
         -BucketTestFile1 "insert_sql_movies.py" `
         -BucketTestFile2 "main.py" `
         -BucketTestFile3 "movie.sql" `
         -CloudSQLTestPrivateNetwork ${{ env.private_subnetwork_name }} `
-        -CloudSQLTestRegion ${{ env.REGION }} `
+        -CloudSQLTestRegion $region `
         -CloudSQLTestInstanceName ${{ env.sql_instance_name }} `
         -CloudSQLTestProjectId ${{ env.PROJECT_NAME }} `
         -FastApiTestIpAddress "10.0.0.2" `
         -PrivateVMTestNetworkIP "10.0.0.2" `
         -PrivateVMTestPrivateSubnetwork ${{ env.private_subnetwork_name }} `
         -PrivateVMTestInstanceName ${{ env.fast_api_instance_name }} `
-        -PrivateVMTestZone ${{ env.ZONE }}
+        -PrivateVMTestZone $zone 
