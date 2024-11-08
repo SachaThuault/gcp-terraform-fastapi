@@ -22,3 +22,15 @@ output "fast_api_instance_name" {
   value       = google_compute_instance.fast_api_instance_private.name
   description = "The name of the FastAPI private instance."
 }
+
+output "private_network_name" {
+  value = google_compute_network.terraform_network.self_link
+}
+
+output "private_subnetwork_name" {
+  value = google_compute_subnetwork.private.self_link
+}
+
+output "public_subnetwork_name" {
+  value = google_compute_subnetwork.public.self_link
+}
