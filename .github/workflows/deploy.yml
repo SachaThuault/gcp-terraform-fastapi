@@ -211,7 +211,7 @@ jobs:
       shell: pwsh
       working-directory: test
       run: |
-        Write-Host ${{ TERRAFORM_OUPUT }}
+        Write-Host ${{ env.TERRAFORM_OUPUT }}
         .\runTests.ps1 `
         -BastionTestNatIP ${{ env.BastionTestNatIP }} `
         -BastionTestPublicSubnetwork "https://www.googleapis.com/compute/v1/projects/${{ env.PROJECT_NAME }}/regions/${{ env.REGION }}/subnetworks/${{ env.PROJECT_NAME }}-public-subnet" `
