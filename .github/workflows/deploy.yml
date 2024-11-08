@@ -174,6 +174,8 @@ jobs:
     # Step 5: Install the latest version of Terraform CLI
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      with:
+      terraform_wrapper: false
 
     # Step 6: Initialize the Terraform configuration
     - name: Terraform Init
@@ -197,7 +199,7 @@ jobs:
     - name: Terraform Output 
       id: terraform_output
       run: |
-        echo "public_subnetwork_name=$(terraform output -raw public_subnetwork_name)" >> $GITHUB_ENV
+        echo "public_subnetwork_name='terraform output -raw public_subnetwork_name'" >> $GITHUB_ENV
 
     # Step 10: Install Pester module
     - name: Install Pester Module
