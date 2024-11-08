@@ -197,10 +197,7 @@ jobs:
     - name: Terraform Output 
       id: terraform_output
       run: |
-        # terraform output
-        TERRAFORM_OUPUT=$(terraform output)
-        echo $TERRAFORM_OUTPUT
-        echo "TERRAFORM_OUPUT=${TERRAFORM_OUPUT}" >> $GITHUB_ENV
+      echo "public_subnetwork_name=`terraform output -raw public_subnetwork_name`" >> $GITHUB_ENV
     # Step 10: Install Pester module
     - name: Install Pester Module
       run: |
@@ -211,7 +208,7 @@ jobs:
       shell: pwsh
       working-directory: test
       run: |
-        Write-Host ${{ env.TERRAFORM_OUPUT }}
+        Write-Host ${{ env.public_subnetwork_name }}
         .\runTests.ps1 `
         -BastionTestNatIP ${{ env.BastionTestNatIP }} `
         -BastionTestPublicSubnetwork "https://www.googleapis.com/compute/v1/projects/${{ env.PROJECT_NAME }}/regions/${{ env.REGION }}/subnetworks/${{ env.PROJECT_NAME }}-public-subnet" `
