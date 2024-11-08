@@ -24,18 +24,19 @@ echo "Executing startup script for the first time."
 sudo apt update
 sudo apt install -y python3 python3-pip
 
+# Write the FastAPI application to main.py
+gsutil cp gs://$PROJECT_ID-bucket-data/main.py .
+gsutil cp gs://$PROJECT_ID-bucket-data/movie.sql .
+gsutil cp gs://$PROJECT_ID-bucket-data/insert_sql_movies.py .
+gsutil cp gs://$PROJECT_ID-bucket-data/requirements.txt .
+
 # Install python libraries
-pip3 install fastapi uvicorn sqlalchemy pymysql google-cloud-secret-manager cloud-sql-python-connector sqlalchemy-pytds
+pip3 install -r requirements.txt
 
 # Set up the FastAPI application directory
 APP_DIR="/home/$(whoami)/fastapi_app"
 mkdir -p "$APP_DIR"
 cd "$APP_DIR"
-
-# Write the FastAPI application to main.py
-gsutil cp gs://$PROJECT_ID-bucket-data/main.py .
-gsutil cp gs://$PROJECT_ID-bucket-data/movie.sql .
-gsutil cp gs://$PROJECT_ID-bucket-data/insert_sql_movies.py .
 
 # Add ~/.local/bin to PATH in current session
 export PATH=$PATH:~/.local/bin

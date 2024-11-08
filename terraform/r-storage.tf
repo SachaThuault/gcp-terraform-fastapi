@@ -21,3 +21,9 @@ resource "google_storage_bucket_object" "populate_movie_db_python_script" {
   bucket = google_storage_bucket.bucket_data.name
   source = "${path.module}/../src/insert_sql_movies.py"
 }
+
+resource "google_storage_bucket_object" "requirements.txt" {
+  name   = "requirements.txt"
+  bucket = google_storage_bucket.bucket_data.name
+  source = "${path.module}/../src/requirements.txt"
+}
