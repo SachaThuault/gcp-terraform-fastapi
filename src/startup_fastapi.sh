@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# Define the flag file path
-FLAG_FILE="/var/log/fastapi-startup-executed"
+# # Define the flag file path
+# FLAG_FILE="/var/log/fastapi-startup-executed"
 
 # Get the project ID from gcloud
 PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_ID
 
-# Check if the script has already been executed
-if [ -f $FLAG_FILE ]; then
-    gsutil cp gs://$PROJECT_ID-bucket-data/main.py .
-    echo "Startup script has already been executed. Reloading and starting FastAPI service."
-    sudo systemctl daemon-reload
-    sudo systemctl start fastapi
-    sudo systemctl enable fastapi
-    exit 0
-fi
+# # Check if the script has already been executed
+# if [ -f $FLAG_FILE ]; then
+#     gsutil cp gs://$PROJECT_ID-bucket-data/main.py .
+#     echo "Startup script has already been executed. Reloading and starting FastAPI service."
+#     sudo systemctl daemon-reload
+#     sudo systemctl start fastapi
+#     sudo systemctl enable fastapi
+#     exit 0
+# fi
 
 # If the script hasn't run before, proceed with installation and setup
 echo "Executing startup script for the first time."
@@ -72,5 +72,5 @@ sudo systemctl start fastapi
 sudo systemctl enable fastapi
 
 # Create the flag file to indicate successful execution
-touch $FLAG_FILE
+# touch $FLAG_FILE
 
